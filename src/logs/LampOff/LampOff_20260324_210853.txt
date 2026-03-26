@@ -1,0 +1,160 @@
+================================================================================
+Task: LampOff
+Log file: logs/LampOff/LampOff_20260324_210853.txt
+Start time: 20260324_210853
+================================================================================
+Instruction: turn off the light
+--------------------------------------------------------------------------------
+*** OpenAI API call took 1.21s ***
+########################################
+## "planner" generated code
+## context: "objects = ['lamp', 'button']"
+########################################
+objects = [[33m'[39;49;00m[33mlamp[39;49;00m[33m'[39;49;00m, [33m'[39;49;00m[33mbutton[39;49;00m[33m'[39;49;00m][37m[39;49;00m
+[37m# Query: turn off the light.[39;49;00m[37m[39;49;00m
+composer([33m"[39;49;00m[33mmove to the center of the button[39;49;00m[33m"[39;49;00m)[37m[39;49;00m
+composer([33m"[39;49;00m[33mclose the gripper[39;49;00m[33m"[39;49;00m)[37m[39;49;00m
+composer([33m"[39;49;00m[33mback to default pose[39;49;00m[33m"[39;49;00m)[37m[39;49;00m
+[37m# done[39;49;00m[37m[39;49;00m
+
+
+*** OpenAI API call took 2.49s ***
+########################################
+## "composer" generated code
+########################################
+[37m# Query: move to the center of the button.[39;49;00m[37m[39;49;00m
+movable = parse_query_obj([33m'[39;49;00m[33mgripper[39;49;00m[33m'[39;49;00m)[37m[39;49;00m
+affordance_map = get_affordance_map([33m'[39;49;00m[33ma point at the center of the button[39;49;00m[33m'[39;49;00m)[37m[39;49;00m
+execute(movable, affordance_map=affordance_map)[37m[39;49;00m
+
+
+*** OpenAI API call took 0.80s ***
+########################################
+## "parse_query_obj" generated code
+## context: "objects = ['lamp', 'button']"
+########################################
+objects = [[33m'[39;49;00m[33mlamp[39;49;00m[33m'[39;49;00m, [33m'[39;49;00m[33mbutton[39;49;00m[33m'[39;49;00m][37m[39;49;00m
+[37m# Query: gripper.[39;49;00m[37m[39;49;00m
+gripper = detect([33m'[39;49;00m[33mgripper[39;49;00m[33m'[39;49;00m)[37m[39;49;00m
+ret_val = gripper[37m[39;49;00m
+
+
+*** OpenAI API call took 3.34s ***
+########################################
+## "get_affordance_map" generated code
+########################################
+[37m# Query: a point at the center of the button.[39;49;00m[37m[39;49;00m
+affordance_map = get_empty_affordance_map()[37m[39;49;00m
+button = parse_query_obj([33m'[39;49;00m[33mbutton[39;49;00m[33m'[39;49;00m)[37m[39;49;00m
+x, y, z = button.position[37m[39;49;00m
+affordance_map[x, y, z] = [34m1[39;49;00m[37m[39;49;00m
+ret_val = affordance_map[37m[39;49;00m
+
+
+*** OpenAI API call took 0.59s ***
+########################################
+## "parse_query_obj" generated code
+## context: "objects = ['lamp', 'button']"
+########################################
+objects = [[33m'[39;49;00m[33mlamp[39;49;00m[33m'[39;49;00m, [33m'[39;49;00m[33mbutton[39;49;00m[33m'[39;49;00m][37m[39;49;00m
+[37m# Query: button.[39;49;00m[37m[39;49;00m
+button = detect([33m'[39;49;00m[33mbutton[39;49;00m[33m'[39;49;00m)[37m[39;49;00m
+ret_val = button[37m[39;49;00m
+
+
+[planners.py | 21:9:2.125] start
+[planners.py | 21:9:2.298] start optimizing, start_pos: [52 49 71]
+[planners.py | 21:9:2.330] optimization finished; path length: 73
+[planners.py | 21:9:2.332] after postprocessing, path length: 37
+[planners.py | 21:9:2.332] last waypoint: [64. 50.  2.]
+[94m[interfaces.py | 21:9:2] planner time: 0.209s[0m
+** saving visualization to ./visualizations/21:9:2.html ...
+** saving visualization to ./visualizations/latest.html ...
+** save to ./visualizations/21:9:2.html
+[94m[interfaces.py | 21:9:2] start executing path via controller (39 waypoints)[0m
+[94m[interfaces.py | 21:9:3] completed waypoint 1 (wp: [2.690e-01 1.000e-03 1.469e+00], actual: [0.27  0.    1.469], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.709)[0m
+[94m[interfaces.py | 21:9:3] completed waypoint 2 (wp: [0.296 0.024 1.449], actual: [0.296 0.023 1.449], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.685)[0m
+[94m[interfaces.py | 21:9:4] completed waypoint 3 (wp: [0.322 0.043 1.429], actual: [0.321 0.042 1.429], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.663)[0m
+[94m[interfaces.py | 21:9:4] completed waypoint 4 (wp: [0.346 0.059 1.409], actual: [0.345 0.059 1.409], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.642)[0m
+[94m[interfaces.py | 21:9:5] completed waypoint 5 (wp: [0.368 0.073 1.388], actual: [0.367 0.072 1.388], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.621)[0m
+[94m[interfaces.py | 21:9:5] completed waypoint 6 (wp: [0.389 0.083 1.368], actual: [0.388 0.083 1.368], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.601)[0m
+[94m[interfaces.py | 21:9:6] completed waypoint 7 (wp: [0.408 0.091 1.348], actual: [0.407 0.091 1.348], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.582)[0m
+[94m[interfaces.py | 21:9:6] completed waypoint 8 (wp: [0.425 0.097 1.328], actual: [0.425 0.097 1.327], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.563)[0m
+[94m[interfaces.py | 21:9:7] completed waypoint 9 (wp: [0.441 0.101 1.308], actual: [0.44  0.101 1.308], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.545)[0m
+[94m[interfaces.py | 21:9:7] completed waypoint 10 (wp: [0.455 0.104 1.287], actual: [0.454 0.103 1.287], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.527)[0m
+[94m[interfaces.py | 21:9:8] completed waypoint 11 (wp: [0.472 0.106 1.257], actual: [0.471 0.106 1.258], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.5)[0m
+[94m[interfaces.py | 21:9:8] completed waypoint 12 (wp: [0.481 0.106 1.237], actual: [0.48  0.106 1.237], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.481)[0m
+[94m[interfaces.py | 21:9:9] completed waypoint 13 (wp: [0.487 0.107 1.217], actual: [0.487 0.107 1.217], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.463)[0m
+[94m[interfaces.py | 21:9:9] completed waypoint 14 (wp: [0.491 0.107 1.196], actual: [0.491 0.107 1.196], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.444)[0m
+[94m[interfaces.py | 21:9:10] completed waypoint 15 (wp: [0.493 0.107 1.176], actual: [0.492 0.107 1.176], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.425)[0m
+[94m[interfaces.py | 21:9:10] completed waypoint 16 (wp: [0.493 0.106 1.156], actual: [0.493 0.106 1.155], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.406)[0m
+[94m[interfaces.py | 21:9:11] completed waypoint 17 (wp: [0.492 0.105 1.136], actual: [0.492 0.105 1.135], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.386)[0m
+[94m[interfaces.py | 21:9:11] completed waypoint 18 (wp: [0.49  0.103 1.116], actual: [0.49  0.103 1.115], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.366)[0m
+[94m[interfaces.py | 21:9:12] completed waypoint 19 (wp: [0.488 0.099 1.095], actual: [0.488 0.099 1.095], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.347)[0m
+[94m[interfaces.py | 21:9:12] completed waypoint 20 (wp: [0.486 0.093 1.075], actual: [0.486 0.093 1.075], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.326)[0m
+[94m[interfaces.py | 21:9:13] completed waypoint 21 (wp: [0.484 0.087 1.055], actual: [0.484 0.087 1.055], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.304)[0m
+[94m[interfaces.py | 21:9:13] completed waypoint 22 (wp: [0.481 0.079 1.035], actual: [0.481 0.079 1.035], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.283)[0m
+[94m[interfaces.py | 21:9:14] completed waypoint 23 (wp: [0.479 0.071 1.015], actual: [0.479 0.071 1.014], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.262)[0m
+[94m[interfaces.py | 21:9:14] completed waypoint 24 (wp: [0.476 0.061 0.994], actual: [0.476 0.062 0.994], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.24)[0m
+[94m[interfaces.py | 21:9:15] completed waypoint 25 (wp: [0.473 0.053 0.974], actual: [0.473 0.054 0.973], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.218)[0m
+[94m[interfaces.py | 21:9:15] completed waypoint 26 (wp: [0.469 0.046 0.951], actual: [0.469 0.046 0.951], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.194)[0m
+[94m[interfaces.py | 21:9:16] completed waypoint 27 (wp: [0.465 0.039 0.929], actual: [0.465 0.039 0.928], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.171)[0m
+[94m[interfaces.py | 21:9:16] completed waypoint 28 (wp: [0.461 0.034 0.906], actual: [0.46  0.034 0.906], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.148)[0m
+[94m[interfaces.py | 21:9:17] completed waypoint 29 (wp: [0.457 0.028 0.886], actual: [0.457 0.029 0.887], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.128)[0m
+[94m[interfaces.py | 21:9:17] completed waypoint 30 (wp: [0.453 0.025 0.87 ], actual: [0.453 0.025 0.87 ], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.111)[0m
+[94m[interfaces.py | 21:9:18] completed waypoint 31 (wp: [0.451 0.021 0.856], actual: [0.451 0.022 0.857], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.098)[0m
+[94m[interfaces.py | 21:9:18] completed waypoint 32 (wp: [0.449 0.02  0.843], actual: [0.449 0.02  0.843], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.085)[0m
+[94m[interfaces.py | 21:9:18] completed waypoint 33 (wp: [0.446 0.019 0.832], actual: [0.446 0.019 0.832], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.074)[0m
+[94m[interfaces.py | 21:9:19] completed waypoint 34 (wp: [0.443 0.019 0.822], actual: [0.443 0.019 0.822], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.064)[0m
+[94m[interfaces.py | 21:9:19] skip waypoint 35 because it is moving in opposite direction of the final target[0m
+[94m[interfaces.py | 21:9:19] completed waypoint 36 (wp: [0.438 0.019 0.807], actual: [0.438 0.019 0.807], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.05)[0m
+[94m[interfaces.py | 21:9:20] completed waypoint 37 (wp: [0.404 0.007 0.772], actual: [0.404 0.007 0.772], target: [0.404 0.007 0.772], start: [2.690e-01 1.000e-03 1.469e+00], dist2target: 0.0)[0m
+[94m[interfaces.py | 21:9:20] reached last waypoint; curr_xyz=[0.40395665 0.00678217 0.77209055], target=[0.40378785 0.00661612 0.7722019 ] (distance: 0.000))[0m
+[94m[interfaces.py | 21:9:20] reached target; terminating [0m
+[94m[interfaces.py | 21:9:20] finished executing path via controller[0m
+*** OpenAI API call took 2.01s ***
+########################################
+## "composer" generated code
+########################################
+[37m# Query: close the gripper.[39;49;00m[37m[39;49;00m
+movable = parse_query_obj([33m'[39;49;00m[33mgripper[39;49;00m[33m'[39;49;00m)[37m[39;49;00m
+gripper_map = get_gripper_map([33m'[39;49;00m[33mclose everywhere[39;49;00m[33m'[39;49;00m)[37m[39;49;00m
+execute(movable, gripper_map=gripper_map)[37m[39;49;00m
+
+
+(using cache) *** OpenAI API call took 0.00s ***
+########################################
+## "parse_query_obj" generated code
+## context: "objects = ['lamp', 'button']"
+########################################
+objects = [[33m'[39;49;00m[33mlamp[39;49;00m[33m'[39;49;00m, [33m'[39;49;00m[33mbutton[39;49;00m[33m'[39;49;00m][37m[39;49;00m
+[37m# Query: gripper.[39;49;00m[37m[39;49;00m
+gripper = detect([33m'[39;49;00m[33mgripper[39;49;00m[33m'[39;49;00m)[37m[39;49;00m
+ret_val = gripper[37m[39;49;00m
+
+
+*** OpenAI API call took 1.37s ***
+########################################
+## "get_gripper_map" generated code
+########################################
+[37m# Query: close everywhere.[39;49;00m[37m[39;49;00m
+gripper_map = get_empty_gripper_map()[37m[39;49;00m
+[37m# close everywhere[39;49;00m[37m[39;49;00m
+gripper_map[:, :, :] = [34m0[39;49;00m[37m[39;49;00m
+ret_val = gripper_map[37m[39;49;00m
+
+
+[94m[interfaces.py | 21:9:24] finished executing path via controller[0m
+*** OpenAI API call took 0.79s ***
+########################################
+## "composer" generated code
+########################################
+[37m# Query: back to default pose.[39;49;00m[37m[39;49;00m
+reset_to_default_pose()[37m[39;49;00m
+
+
+Reward: 0.0
+
+================================================================================
+Run finished.
+================================================================================

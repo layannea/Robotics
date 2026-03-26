@@ -23,6 +23,20 @@ class LMP:
         self._context = None
         self._cache = DiskCache(load_cache=self._cfg['load_cache'])
 
+        USE_MEMORY = False  # set to True to enable memory module
+
+        if USE_MEMORY and self._name == 'planner':
+            from memory.memory_store import retrieve, retrieve_failures
+            self._retrieve = retrieve
+            self._retrieve_failures = retrieve_failures
+        elif USE_MEMORY and self._name == 'get_affordance_map':
+            from memory.memory_store import retrieve_affordance_hint
+            self._retrieve = retrieve_affordance_hint
+            self._retrieve_failures = None
+        else:
+            self._retrieve = None
+            self._retrieve_failures = None
+
     def clear_exec_hist(self):
         self.exec_hist = ''
 
@@ -44,6 +58,55 @@ class LMP:
 
         user_query = f'{self._cfg["query_prefix"]}{query}{self._cfg["query_suffix"]}'
         prompt += f'\n{user_query}'
+
+        if self._retrieve is not None:
+            if self._name == 'planner':
+                objects = []
+                if self._context:
+                    try:
+                        objects = eval(self._context.split('=', 1)[1].strip())
+                    except Exception:
+                        pass
+                retrieved = self._retrieve(query, objects, top_k=1)
+                print(f'[memory] planner query="{query}" retrieved={len(retrieved)}')
+                if retrieved:
+                    ep = retrieved[0]
+                    code_lines = [
+                        l for l in ep['planner_code'].splitlines()
+                        if not l.startswith('objects =') and not l.startswith('# Query:')
+                    ]
+                    clean_code = '\n'.join(code_lines).strip()
+                    if clean_code:
+                        commented = '\n'.join(f'# hint: {l}' for l in clean_code.splitlines())
+                        prompt += (
+                            f"\n# Memory hint from similar task ('{ep['instruction']}'):"
+                            f"\n{commented}"
+                        )
+                if self._retrieve_failures is not None:
+                    failed = self._retrieve_failures(query, objects, top_k=1)
+                    print(f'[memory] planner failures query="{query}" retrieved={len(failed)}')
+                    if failed:
+                        fep = failed[0]
+                        prompt += (
+                            f"\n# WARNING: a similar task ('{fep['instruction']}') previously failed."
+                            f" Ensure correct object targeting and reachable positions."
+                        )
+            elif self._name == 'get_affordance_map':
+                retrieved = self._retrieve(query, top_k=1)
+                print(f'[memory] affordance query="{query}" retrieved={len(retrieved)}')
+                if retrieved:
+                    hint = retrieved[0]
+                    code_lines = [
+                        l for l in hint['code'].splitlines()
+                        if not l.startswith('# Query:') and l.strip()
+                    ]
+                    clean_code = '\n'.join(code_lines).strip()
+                    if clean_code:
+                        commented = '\n'.join(f'# hint: {l}' for l in clean_code.splitlines())
+                        prompt += (
+                            f"\n# Memory hint from similar affordance query ('{hint['query']}'):"
+                            f"\n{commented}"
+                        )
 
         return prompt, user_query
     
@@ -128,7 +191,7 @@ class LMP:
         gvars = merge_dicts([self._fixed_vars, self._variable_vars])
         lvars = kwargs
 
-        # return function instead of executing it so we can replan using latest obs（do not do this for high-level UIs)
+        # return function instead of executing it so we can replan using latest obs (do not do this for high-level UIs)
         if not self._name in ['composer', 'planner']:
             to_exec = 'def ret_val():\n' + to_exec.replace('ret_val = ', 'return ')
             to_exec = to_exec.replace('\n', '\n    ')

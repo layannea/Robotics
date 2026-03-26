@@ -1,0 +1,134 @@
+================================================================================
+Task: PushButton
+Log file: logs/PushButton/PushButton_20260325_210853.txt
+Start time: 20260325_210853
+================================================================================
+Instruction: press the blue button
+--------------------------------------------------------------------------------
+[memory] planner query="press the blue button" retrieved=1
+[memory] planner failures query="press the blue button" retrieved=1
+*** OpenAI API call took 2.54s ***
+########################################
+## "planner" generated code
+## context: "objects = ['button']"
+########################################
+objects = [[33m'[39;49;00m[33mbutton[39;49;00m[33m'[39;49;00m][37m[39;49;00m
+[37m# Query: press the blue button.[39;49;00m[37m[39;49;00m
+composer([33m"[39;49;00m[33mmove to the center of the button[39;49;00m[33m"[39;49;00m)[37m[39;49;00m
+composer([33m"[39;49;00m[33mclose the gripper[39;49;00m[33m"[39;49;00m)[37m[39;49;00m
+composer([33m"[39;49;00m[33mback to default pose[39;49;00m[33m"[39;49;00m)[37m[39;49;00m
+[37m# done[39;49;00m[37m[39;49;00m
+
+
+*** OpenAI API call took 2.76s ***
+########################################
+## "composer" generated code
+########################################
+[37m# Query: move to the center of the button.[39;49;00m[37m[39;49;00m
+movable = parse_query_obj([33m'[39;49;00m[33mgripper[39;49;00m[33m'[39;49;00m)[37m[39;49;00m
+affordance_map = get_affordance_map([33m'[39;49;00m[33ma point at the center of the button[39;49;00m[33m'[39;49;00m)[37m[39;49;00m
+execute(movable, affordance_map=affordance_map)[37m[39;49;00m
+
+
+*** OpenAI API call took 1.77s ***
+########################################
+## "parse_query_obj" generated code
+## context: "objects = ['button']"
+########################################
+objects = [[33m'[39;49;00m[33mbutton[39;49;00m[33m'[39;49;00m][37m[39;49;00m
+[37m# Query: gripper.[39;49;00m[37m[39;49;00m
+gripper = detect([33m'[39;49;00m[33mgripper[39;49;00m[33m'[39;49;00m)[37m[39;49;00m
+ret_val = gripper[37m[39;49;00m
+
+
+[memory] affordance query="a point at the center of the button" retrieved=1
+*** OpenAI API call took 4.19s ***
+########################################
+## "get_affordance_map" generated code
+########################################
+[37m# Query: a point at the center of the button.[39;49;00m[37m[39;49;00m
+affordance_map = get_empty_affordance_map()[37m[39;49;00m
+button = parse_query_obj([33m'[39;49;00m[33mbutton[39;49;00m[33m'[39;49;00m)[37m[39;49;00m
+x, y, z = button.position[37m[39;49;00m
+affordance_map[x, y, z] = [34m1[39;49;00m[37m[39;49;00m
+ret_val = affordance_map[37m[39;49;00m
+
+
+*** OpenAI API call took 0.92s ***
+########################################
+## "parse_query_obj" generated code
+## context: "objects = ['button']"
+########################################
+objects = [[33m'[39;49;00m[33mbutton[39;49;00m[33m'[39;49;00m][37m[39;49;00m
+[37m# Query: button.[39;49;00m[37m[39;49;00m
+button = detect([33m'[39;49;00m[33mbutton[39;49;00m[33m'[39;49;00m)[37m[39;49;00m
+ret_val = button[37m[39;49;00m
+
+
+[planners.py | 21:9:6.324] start
+[planners.py | 21:9:6.405] start optimizing, start_pos: [52 49 71]
+[planners.py | 21:9:6.548] optimization finished; path length: 301
+[planners.py | 21:9:6.554] after postprocessing, path length: 30
+[planners.py | 21:9:6.554] last waypoint: [50. 45.  2.]
+[94m[interfaces.py | 21:9:6] planner time: 0.231s[0m
+** saving visualization to ./visualizations/21:9:6.html ...
+** saving visualization to ./visualizations/latest.html ...
+** save to ./visualizations/21:9:6.html
+[94m[interfaces.py | 21:9:6] start executing path via controller (32 waypoints)[0m
+[94m[interfaces.py | 21:9:9] completed waypoint 1 (wp: [ 0.267 -0.02   1.469], actual: [ 0.268 -0.02   1.469], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.698)[0m
+[94m[interfaces.py | 21:9:9] completed waypoint 2 (wp: [ 0.263 -0.033  1.449], actual: [ 0.263 -0.033  1.449], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.677)[0m
+[94m[interfaces.py | 21:9:10] completed waypoint 3 (wp: [ 0.26  -0.043  1.429], actual: [ 0.26  -0.043  1.429], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.657)[0m
+[94m[interfaces.py | 21:9:10] completed waypoint 4 (wp: [ 0.257 -0.051  1.409], actual: [ 0.258 -0.051  1.409], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.636)[0m
+[94m[interfaces.py | 21:9:11] completed waypoint 5 (wp: [ 0.256 -0.057  1.388], actual: [ 0.256 -0.057  1.388], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.616)[0m
+[94m[interfaces.py | 21:9:11] completed waypoint 6 (wp: [ 0.254 -0.061  1.368], actual: [ 0.254 -0.061  1.368], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.596)[0m
+[94m[interfaces.py | 21:9:12] completed waypoint 7 (wp: [ 0.254 -0.063  1.348], actual: [ 0.254 -0.063  1.348], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.576)[0m
+[94m[interfaces.py | 21:9:12] completed waypoint 8 (wp: [ 0.253 -0.065  1.328], actual: [ 0.253 -0.065  1.328], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.555)[0m
+[94m[interfaces.py | 21:9:13] completed waypoint 9 (wp: [ 0.253 -0.065  1.308], actual: [ 0.254 -0.065  1.307], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.535)[0m
+[94m[interfaces.py | 21:9:13] completed waypoint 10 (wp: [ 0.254 -0.064  1.287], actual: [ 0.254 -0.064  1.288], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.516)[0m
+[94m[interfaces.py | 21:9:14] completed waypoint 11 (wp: [ 0.255 -0.061  1.257], actual: [ 0.255 -0.061  1.258], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.486)[0m
+[94m[interfaces.py | 21:9:14] completed waypoint 12 (wp: [ 0.255 -0.06   1.237], actual: [ 0.255 -0.06   1.237], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.465)[0m
+[94m[interfaces.py | 21:9:15] completed waypoint 13 (wp: [ 0.255 -0.06   1.217], actual: [ 0.255 -0.06   1.217], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.445)[0m
+[94m[interfaces.py | 21:9:15] completed waypoint 14 (wp: [ 0.255 -0.06   1.196], actual: [ 0.255 -0.06   1.197], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.424)[0m
+[94m[interfaces.py | 21:9:16] completed waypoint 15 (wp: [ 0.255 -0.06   1.176], actual: [ 0.255 -0.06   1.176], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.404)[0m
+[94m[interfaces.py | 21:9:16] completed waypoint 16 (wp: [ 0.255 -0.06   1.156], actual: [ 0.255 -0.06   1.156], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.384)[0m
+[94m[interfaces.py | 21:9:17] completed waypoint 17 (wp: [ 0.256 -0.06   1.136], actual: [ 0.256 -0.06   1.136], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.364)[0m
+[94m[interfaces.py | 21:9:17] completed waypoint 18 (wp: [ 0.256 -0.06   1.116], actual: [ 0.256 -0.06   1.116], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.343)[0m
+[94m[interfaces.py | 21:9:18] completed waypoint 19 (wp: [ 0.256 -0.06   1.095], actual: [ 0.256 -0.06   1.095], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.323)[0m
+[94m[interfaces.py | 21:9:18] completed waypoint 20 (wp: [ 0.256 -0.06   1.075], actual: [ 0.256 -0.06   1.075], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.303)[0m
+[94m[interfaces.py | 21:9:18] completed waypoint 21 (wp: [ 0.255 -0.06   1.054], actual: [ 0.255 -0.06   1.054], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.281)[0m
+[94m[interfaces.py | 21:9:19] completed waypoint 22 (wp: [ 0.254 -0.06   1.031], actual: [ 0.254 -0.06   1.032], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.26)[0m
+[94m[interfaces.py | 21:9:19] completed waypoint 23 (wp: [ 0.253 -0.06   1.01 ], actual: [ 0.253 -0.06   1.01 ], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.238)[0m
+[94m[interfaces.py | 21:9:20] completed waypoint 24 (wp: [ 0.252 -0.06   0.988], actual: [ 0.252 -0.06   0.989], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.217)[0m
+[94m[interfaces.py | 21:9:20] completed waypoint 25 (wp: [ 0.251 -0.06   0.969], actual: [ 0.251 -0.06   0.969], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.197)[0m
+[94m[interfaces.py | 21:9:21] completed waypoint 26 (wp: [ 0.251 -0.059  0.952], actual: [ 0.251 -0.059  0.952], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.179)[0m
+[94m[interfaces.py | 21:9:21] completed waypoint 27 (wp: [ 0.25  -0.059  0.937], actual: [ 0.249 -0.059  0.937], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.165)[0m
+[94m[interfaces.py | 21:9:22] completed waypoint 28 (wp: [ 0.248 -0.059  0.924], actual: [ 0.248 -0.059  0.924], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.152)[0m
+[94m[interfaces.py | 21:9:22] completed waypoint 29 (wp: [ 0.248 -0.057  0.913], actual: [ 0.248 -0.057  0.912], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.14)[0m
+[94m[interfaces.py | 21:9:23] completed waypoint 30 (wp: [ 0.255 -0.06   0.772], actual: [ 0.255 -0.06   0.772], target: [ 0.255 -0.06   0.772], start: [ 0.267 -0.02   1.469], dist2target: 0.0)[0m
+[94m[interfaces.py | 21:9:23] reached last waypoint; curr_xyz=[ 0.25489402 -0.05951133  0.77234143], target=[ 0.25530303 -0.05954546  0.7722019 ] (distance: 0.000))[0m
+[94m[interfaces.py | 21:9:23] reached target; terminating [0m
+[94m[interfaces.py | 21:9:23] finished executing path via controller[0m
+OpenAI API got err You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.
+Retrying after 3s.
+OpenAI API got err You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.
+Retrying after 3s.
+OpenAI API got err You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.
+Retrying after 3s.
+OpenAI API got err You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.
+Retrying after 3s.
+OpenAI API got err You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.
+Retrying after 3s.
+OpenAI API got err You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.
+Retrying after 3s.
+OpenAI API got err You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.
+Retrying after 3s.
+OpenAI API got err You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.
+Retrying after 3s.
+OpenAI API got err You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.
+Retrying after 3s.
+OpenAI API got err You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.
+Retrying after 3s.
+OpenAI API got err You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.
+Retrying after 3s.
+OpenAI API got err You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.
+Retrying after 3s.

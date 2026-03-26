@@ -1,0 +1,1044 @@
+[
+  {
+    "task": "TakeOffWeighingScales",
+    "instruction": "take the green object off of the scales tray",
+    "objects": [
+      "scale",
+      "green pepper",
+      "red pepper",
+      "yellow pepper"
+    ],
+    "planner_code": "objects = ['scale', 'green pepper', 'red pepper', 'yellow pepper']\n# Query: take the green object off of the scales tray.\ncomposer(\"grasp the green pepper\")\ncomposer(\"back to default pose\")\ncomposer(\"move to the table top\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the green pepper.",
+        "code": "affordance_map = get_empty_affordance_map()\ngreen_pepper = parse_query_obj('green pepper')\nx, y, z = green_pepper.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point on the table top.",
+        "code": "affordance_map = get_empty_affordance_map()\ntable = parse_query_obj('table')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = table.aabb\ncenter_x, center_y, center_z = table.position\n# on the table top so z = max_z\nx = center_x\ny = center_y\nz = max_z\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "failure",
+    "reward": 0.0,
+    "log_file": "logs/TakeOffWeighingScales/TakeOffWeighingScales_20260325_124415.txt"
+  },
+  {
+    "task": "TakeOffWeighingScales",
+    "instruction": "take the red pepper off of the scales",
+    "objects": [
+      "scale",
+      "green pepper",
+      "red pepper",
+      "yellow pepper"
+    ],
+    "planner_code": "objects = ['scale', 'green pepper', 'red pepper', 'yellow pepper']\n# Query: take the red pepper off of the scales.\ncomposer(\"grasp the red pepper\")\ncomposer(\"back to default pose\")\ncomposer(\"move to the table top\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the red pepper.",
+        "code": "affordance_map = get_empty_affordance_map()\nred_pepper = parse_query_obj('red pepper')\nx, y, z = red_pepper.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point on the table top.",
+        "code": "affordance_map = get_empty_affordance_map()\ntable = parse_query_obj('table')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = table.aabb\ncenter_x, center_y, center_z = table.position\n# on the table top so z = max_z\nx = center_x\ny = center_y\nz = max_z\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "failure",
+    "reward": 0.0,
+    "log_file": "logs/TakeOffWeighingScales/TakeOffWeighingScales_20260325_143656.txt"
+  },
+  {
+    "task": "TakeOffWeighingScales",
+    "instruction": "grasp the yellow pepper and move it to the table top",
+    "objects": [
+      "scale",
+      "green pepper",
+      "red pepper",
+      "yellow pepper"
+    ],
+    "planner_code": "objects = ['scale', 'green pepper', 'red pepper', 'yellow pepper']\n# Query: grasp the yellow pepper and move it to the table top.\ncomposer(\"grasp the yellow pepper\")\ncomposer(\"back to default pose\")\ncomposer(\"move to the table top\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the yellow pepper.",
+        "code": "affordance_map = get_empty_affordance_map()\nyellow_pepper = parse_query_obj('yellow pepper')\nx, y, z = yellow_pepper.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point on the table top.",
+        "code": "affordance_map = get_empty_affordance_map()\ntable = parse_query_obj('table')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = table.aabb\ncenter_x, center_y, center_z = table.position\n# on the table top so z = max_z\nx = center_x\ny = center_y\nz = max_z\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "success",
+    "reward": 1.0,
+    "log_file": "logs/TakeOffWeighingScales/TakeOffWeighingScales_20260325_143346.txt"
+  },
+  {
+    "task": "TakeOffWeighingScales",
+    "instruction": "put the green item on the item",
+    "objects": [
+      "scale",
+      "green pepper",
+      "red pepper",
+      "yellow pepper"
+    ],
+    "planner_code": "objects = ['scale', 'green pepper', 'red pepper', 'yellow pepper']\n# Query: put the green item on the item.\ncomposer(\"grasp the green pepper\")\ncomposer(\"back to default pose\")\ncomposer(\"move to the top of the scale\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the green pepper.",
+        "code": "affordance_map = get_empty_affordance_map()\ngreen_pepper = parse_query_obj('green pepper')\nx, y, z = green_pepper.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point 10cm above the scale.",
+        "code": "affordance_map = get_empty_affordance_map()\nscale = parse_query_obj('scale')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = scale.aabb\ncenter_x, center_y, center_z = scale.position\n# 10cm above so we add to z-axis\nx = center_x\ny = center_y\nz = max_z + cm2index(10, 'z')\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "failure",
+    "reward": 0.0,
+    "log_file": "logs/TakeOffWeighingScales/TakeOffWeighingScales_20260325_125438.txt"
+  },
+  {
+    "task": "TakeOffWeighingScales",
+    "instruction": "remove the red pepper from the weighing scales and place it on the table",
+    "objects": [
+      "scale",
+      "green pepper",
+      "red pepper",
+      "yellow pepper"
+    ],
+    "planner_code": "objects = ['scale', 'green pepper', 'red pepper', 'yellow pepper']\n# Query: remove the red pepper from the weighing scales and place it on the table.\ncomposer(\"grasp the red pepper\")\ncomposer(\"back to default pose\")\ncomposer(\"move to the table top\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the red pepper.",
+        "code": "affordance_map = get_empty_affordance_map()\nred_pepper = parse_query_obj('red pepper')\nx, y, z = red_pepper.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point on the table top.",
+        "code": "affordance_map = get_empty_affordance_map()\ntable = parse_query_obj('table')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = table.aabb\ncenter_x, center_y, center_z = table.position\n# table top so z = max_z\nx = center_x\ny = center_y\nz = max_z\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "failure",
+    "reward": 0.0,
+    "log_file": "logs/TakeOffWeighingScales/TakeOffWeighingScales_20260325_122928.txt"
+  },
+  {
+    "task": "TakeOffWeighingScales",
+    "instruction": "put the yellow item on the item",
+    "objects": [
+      "scale",
+      "green pepper",
+      "red pepper",
+      "yellow pepper"
+    ],
+    "planner_code": "objects = ['scale', 'green pepper', 'red pepper', 'yellow pepper']\n# Query: put the yellow item on the item.\ncomposer(\"grasp the yellow pepper\")\ncomposer(\"back to default pose\")\ncomposer(\"move to 10cm on top of the scale\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the yellow pepper.",
+        "code": "affordance_map = get_empty_affordance_map()\nyellow_pepper = parse_query_obj('yellow pepper')\nx, y, z = yellow_pepper.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point 10cm above the scale.",
+        "code": "affordance_map = get_empty_affordance_map()\nscale = parse_query_obj('scale')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = scale.aabb\ncenter_x, center_y, center_z = scale.position\n# 10cm above so we add to z-axis\nx = center_x\ny = center_y\nz = max_z + cm2index(10, 'z')\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "failure",
+    "reward": 0.0,
+    "log_file": "logs/TakeOffWeighingScales/TakeOffWeighingScales_20260324_205717.txt"
+  },
+  {
+    "task": "TakeOffWeighingScales",
+    "instruction": "lift the green pepper off of the tray and set it down on the table",
+    "objects": [
+      "scale",
+      "green pepper",
+      "red pepper",
+      "yellow pepper"
+    ],
+    "planner_code": "objects = ['scale', 'green pepper', 'red pepper', 'yellow pepper']\n# Query: lift the green pepper off of the tray and set it down on the table.\ncomposer(\"grasp the green pepper\")\ncomposer(\"back to default pose\")\ncomposer(\"move to the table top\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the green pepper.",
+        "code": "affordance_map = get_empty_affordance_map()\ngreen_pepper = parse_query_obj('green pepper')\nx, y, z = green_pepper.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point on the table top.",
+        "code": "affordance_map = get_empty_affordance_map()\ntable = parse_query_obj('table')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = table.aabb\ncenter_x, center_y, center_z = table.position\n# on the table top so z = max_z\nx = center_x\ny = center_y\nz = max_z\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "failure",
+    "reward": 0.0,
+    "log_file": "logs/TakeOffWeighingScales/TakeOffWeighingScales_20260325_144045.txt"
+  },
+  {
+    "task": "TakeOffWeighingScales",
+    "instruction": "grasp the yellow pepper and move it to the table top",
+    "objects": [
+      "scale",
+      "green pepper",
+      "red pepper",
+      "yellow pepper"
+    ],
+    "planner_code": "objects = ['scale', 'green pepper', 'red pepper', 'yellow pepper']\n# Query: grasp the yellow pepper and move it to the table top.\ncomposer(\"grasp the yellow pepper\")\ncomposer(\"back to default pose\")\ncomposer(\"move to the table top\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the yellow pepper.",
+        "code": "affordance_map = get_empty_affordance_map()\nyellow_pepper = parse_query_obj('yellow pepper')\nx, y, z = yellow_pepper.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point on the table top.",
+        "code": "affordance_map = get_empty_affordance_map()\ntable = parse_query_obj('table')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = table.aabb\ncenter_x, center_y, center_z = table.position\n# on the table top so z = max_z\nx = center_x\ny = center_y\nz = max_z\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "success",
+    "reward": 1.0,
+    "log_file": "logs/TakeOffWeighingScales/TakeOffWeighingScales_20260325_141155.txt"
+  },
+  {
+    "task": "TakeOffWeighingScales",
+    "instruction": "remove the green pepper from the weighing scales and place it on the table",
+    "objects": [
+      "scale",
+      "green pepper",
+      "red pepper",
+      "yellow pepper"
+    ],
+    "planner_code": "objects = ['scale', 'green pepper', 'red pepper', 'yellow pepper']\n# Query: remove the green pepper from the weighing scales and place it on the table.\ncomposer(\"grasp the green pepper\")\ncomposer(\"back to default pose\")\ncomposer(\"move to 10cm on top of the table\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the green pepper.",
+        "code": "affordance_map = get_empty_affordance_map()\ngreen_pepper = parse_query_obj('green pepper')\nx, y, z = green_pepper.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point 10cm above the table.",
+        "code": "affordance_map = get_empty_affordance_map()\ntable = parse_query_obj('table')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = table.aabb\ncenter_x, center_y, center_z = table.position\n# 10cm above so we add to z-axis\nx = center_x\ny = center_y\nz = max_z + cm2index(10, 'z')\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "stuck",
+    "reward": null,
+    "log_file": "logs/TakeOffWeighingScales/TakeOffWeighingScales_20260324_204812.txt"
+  },
+  {
+    "task": "TakeOffWeighingScales",
+    "instruction": "put the yellow item on the item",
+    "objects": [
+      "scale",
+      "green pepper",
+      "red pepper",
+      "yellow pepper"
+    ],
+    "planner_code": "objects = ['scale', 'green pepper', 'red pepper', 'yellow pepper']\n# Query: put the yellow item on the item.\ncomposer(\"grasp the yellow pepper\")\ncomposer(\"back to default pose\")\ncomposer(\"move to the top of the scale\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the yellow pepper.",
+        "code": "affordance_map = get_empty_affordance_map()\nyellow_pepper = parse_query_obj('yellow pepper')\nx, y, z = yellow_pepper.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point 10cm above the scale.",
+        "code": "affordance_map = get_empty_affordance_map()\nscale = parse_query_obj('scale')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = scale.aabb\ncenter_x, center_y, center_z = scale.position\n# 10cm above so we add to z-axis\nx = center_x\ny = center_y\nz = max_z + cm2index(10, 'z')\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "failure",
+    "reward": 0.0,
+    "log_file": "logs/TakeOffWeighingScales/TakeOffWeighingScales_20260325_140956.txt"
+  },
+  {
+    "task": "TakeOffWeighingScales",
+    "instruction": "take the yellow pepper off of the scales",
+    "objects": [
+      "scale",
+      "green pepper",
+      "red pepper",
+      "yellow pepper"
+    ],
+    "planner_code": "objects = ['scale', 'green pepper', 'red pepper', 'yellow pepper']\n# Query: take the yellow pepper off of the scales.\ncomposer(\"grasp the yellow pepper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the yellow pepper.",
+        "code": "affordance_map = get_empty_affordance_map()\nyellow_pepper = parse_query_obj('yellow pepper')\nx, y, z = yellow_pepper.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "failure",
+    "reward": 0.0,
+    "log_file": "logs/TakeOffWeighingScales/TakeOffWeighingScales_20260324_205030.txt"
+  },
+  {
+    "task": "TakeOffWeighingScales",
+    "instruction": "grasp the red pepper and move it to the table top",
+    "objects": [
+      "scale",
+      "green pepper",
+      "red pepper",
+      "yellow pepper"
+    ],
+    "planner_code": "objects = ['scale', 'green pepper', 'red pepper', 'yellow pepper']\n# Query: grasp the red pepper and move it to the table top.\ncomposer(\"grasp the red pepper\")\ncomposer(\"back to default pose\")\ncomposer(\"move to the top of the table\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the red pepper.",
+        "code": "affordance_map = get_empty_affordance_map()\nred_pepper = parse_query_obj('red pepper')\nx, y, z = red_pepper.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point on the top of the table.",
+        "code": "affordance_map = get_empty_affordance_map()\ntable = parse_query_obj('table')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = table.aabb\ncenter_x, center_y, center_z = table.position\n# table top so z = max_z\nx = center_x\ny = center_y\nz = max_z\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "failure",
+    "reward": 0.0,
+    "log_file": "logs/TakeOffWeighingScales/TakeOffWeighingScales_20260325_125204.txt"
+  },
+  {
+    "task": "TakeOffWeighingScales",
+    "instruction": "lift the red pepper off of the tray and set it down on the table",
+    "objects": [
+      "scale",
+      "green pepper",
+      "red pepper",
+      "yellow pepper"
+    ],
+    "planner_code": "objects = ['scale', 'green pepper', 'red pepper', 'yellow pepper']\n# Query: lift the red pepper off of the tray and set it down on the table.\ncomposer(\"grasp the red pepper\")\ncomposer(\"back to default pose\")\ncomposer(\"move to the table top\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the red pepper.",
+        "code": "affordance_map = get_empty_affordance_map()\nred_pepper = parse_query_obj('red pepper')\nx, y, z = red_pepper.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point on the table top.",
+        "code": "affordance_map = get_empty_affordance_map()\ntable = parse_query_obj('table')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = table.aabb\ncenter_x, center_y, center_z = table.position\n# table top so z = max_z\nx = center_x\ny = center_y\nz = max_z\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "failure",
+    "reward": 0.0,
+    "log_file": "logs/TakeOffWeighingScales/TakeOffWeighingScales_20260325_122717.txt"
+  },
+  {
+    "task": "TakeOffWeighingScales",
+    "instruction": "take the yellow object off of the scales tray",
+    "objects": [
+      "scale",
+      "green pepper",
+      "red pepper",
+      "yellow pepper"
+    ],
+    "planner_code": "objects = ['scale', 'green pepper', 'red pepper', 'yellow pepper']\n# Query: take the yellow object off of the scales tray.\ncomposer(\"grasp the yellow pepper\")\ncomposer(\"back to default pose\")\ncomposer(\"move to the table top\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the yellow pepper.",
+        "code": "affordance_map = get_empty_affordance_map()\nyellow_pepper = parse_query_obj('yellow pepper')\nx, y, z = yellow_pepper.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point on the table top.",
+        "code": "affordance_map = get_empty_affordance_map()\ntable = parse_query_obj('table')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = table.aabb\ncenter_x, center_y, center_z = table.position\n# on the table top so z = max_z\nx = center_x\ny = center_y\nz = max_z\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "success",
+    "reward": 1.0,
+    "log_file": "logs/TakeOffWeighingScales/TakeOffWeighingScales_20260325_124854.txt"
+  },
+  {
+    "task": "TakeOffWeighingScales",
+    "instruction": "grasp the red pepper and move it to the table top",
+    "objects": [
+      "scale",
+      "green pepper",
+      "red pepper",
+      "yellow pepper"
+    ],
+    "planner_code": "objects = ['scale', 'green pepper', 'red pepper', 'yellow pepper']\n# Query: grasp the red pepper and move it to the table top.\ncomposer(\"grasp the red pepper\")\ncomposer(\"back to default pose\")\ncomposer(\"move to the table top\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the red pepper.",
+        "code": "affordance_map = get_empty_affordance_map()\nred_pepper = parse_query_obj('red pepper')\nx, y, z = red_pepper.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point on the table top.",
+        "code": "affordance_map = get_empty_affordance_map()\ntable = parse_query_obj('table')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = table.aabb\ncenter_x, center_y, center_z = table.position\n# table top so z = max_z\nx = center_x\ny = center_y\nz = max_z\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "success",
+    "reward": 1.0,
+    "log_file": "logs/TakeOffWeighingScales/TakeOffWeighingScales_20260324_205850.txt"
+  },
+  {
+    "task": "TakeOffWeighingScales",
+    "instruction": "put the yellow item on the item",
+    "objects": [
+      "scale",
+      "green pepper",
+      "red pepper",
+      "yellow pepper"
+    ],
+    "planner_code": "objects = ['scale', 'green pepper', 'red pepper', 'yellow pepper']\n# Query: put the yellow item on the item.\ncomposer(\"grasp the yellow pepper\")\ncomposer(\"back to default pose\")\ncomposer(\"move to the top of the scale\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the yellow pepper.",
+        "code": "affordance_map = get_empty_affordance_map()\nyellow_pepper = parse_query_obj('yellow pepper')\nx, y, z = yellow_pepper.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point 10cm above the scale.",
+        "code": "affordance_map = get_empty_affordance_map()\nscale = parse_query_obj('scale')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = scale.aabb\ncenter_x, center_y, center_z = scale.position\n# 10cm above so we add to z-axis\nx = center_x\ny = center_y\nz = max_z + cm2index(10, 'z')\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "failure",
+    "reward": 0.0,
+    "log_file": "logs/TakeOffWeighingScales/TakeOffWeighingScales_20260325_125031.txt"
+  },
+  {
+    "task": "TakeOffWeighingScales",
+    "instruction": "put the green item on the item",
+    "objects": [
+      "scale",
+      "green pepper",
+      "red pepper",
+      "yellow pepper"
+    ],
+    "planner_code": "objects = ['scale', 'green pepper', 'red pepper', 'yellow pepper']\n# Query: put the green item on the item.\ncomposer(\"grasp the green pepper\")\ncomposer(\"back to default pose\")\ncomposer(\"move to 10cm on top of the scale\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the green pepper.",
+        "code": "affordance_map = get_empty_affordance_map()\ngreen_pepper = parse_query_obj('green pepper')\nx, y, z = green_pepper.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point 10cm above the scale.",
+        "code": "affordance_map = get_empty_affordance_map()\nscale = parse_query_obj('scale')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = scale.aabb\ncenter_x, center_y, center_z = scale.position\n# 10cm above so we add to z-axis\nx = center_x\ny = center_y\nz = max_z + cm2index(10, 'z')\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "stuck",
+    "reward": null,
+    "log_file": "logs/TakeOffWeighingScales/TakeOffWeighingScales_20260324_204518.txt"
+  },
+  {
+    "task": "TakeOffWeighingScales",
+    "instruction": "put the red item on the item",
+    "objects": [
+      "scale",
+      "green pepper",
+      "red pepper",
+      "yellow pepper"
+    ],
+    "planner_code": "objects = ['scale', 'green pepper', 'red pepper', 'yellow pepper']\n# Query: put the red item on the item.\ncomposer(\"grasp the red pepper\")\ncomposer(\"back to default pose\")\ncomposer(\"move to the top of the scale\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the red pepper.",
+        "code": "affordance_map = get_empty_affordance_map()\nred_pepper = parse_query_obj('red pepper')\nx, y, z = red_pepper.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point 10cm above the scale.",
+        "code": "affordance_map = get_empty_affordance_map()\nscale = parse_query_obj('scale')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = scale.aabb\ncenter_x, center_y, center_z = scale.position\n# 10cm above so we add to z-axis\nx = center_x\ny = center_y\nz = max_z + cm2index(10, 'z')\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "failure",
+    "reward": 0.0,
+    "log_file": "logs/TakeOffWeighingScales/TakeOffWeighingScales_20260325_143519.txt"
+  },
+  {
+    "task": "LampOff",
+    "instruction": "turn off the light",
+    "objects": [
+      "lamp",
+      "button"
+    ],
+    "planner_code": "objects = ['lamp', 'button']\n# Query: turn off the light.\ncomposer(\"move to the center of the button\")\ncomposer(\"close the gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the button.",
+        "code": "affordance_map = get_empty_affordance_map()\nbutton = parse_query_obj('button')\nx, y, z = button.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "failure",
+    "reward": 0.0,
+    "log_file": "logs/LampOff/LampOff_20260324_210950.txt"
+  },
+  {
+    "task": "LampOff",
+    "instruction": "turn off the light",
+    "objects": [
+      "lamp",
+      "button"
+    ],
+    "planner_code": "objects = ['lamp', 'button']\n# Query: turn off the light.\ncomposer(\"move to the center of the button\")\ncomposer(\"close the gripper\")\ncomposer(\"back to default pose\")",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the button.",
+        "code": "affordance_map = get_empty_affordance_map()\nbutton = parse_query_obj('button')\nx, y, z = button.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "failure",
+    "reward": 0.0,
+    "log_file": "logs/LampOff/LampOff_20260324_230829.txt"
+  },
+  {
+    "task": "LampOff",
+    "instruction": "turn the lamp off",
+    "objects": [
+      "lamp",
+      "button"
+    ],
+    "planner_code": "objects = ['lamp', 'button']\n# Query: turn the lamp off.\ncomposer(\"move to the center of the button\")\ncomposer(\"close the gripper\")\ncomposer(\"back to default pose\")",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the button.",
+        "code": "affordance_map = get_empty_affordance_map()\nbutton = parse_query_obj('button')\nx, y, z = button.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "failure",
+    "reward": 0.0,
+    "log_file": "logs/LampOff/LampOff_20260325_122128.txt"
+  },
+  {
+    "task": "LampOff",
+    "instruction": "turn off the light",
+    "objects": [
+      "lamp",
+      "button"
+    ],
+    "planner_code": "objects = ['lamp', 'button']\n# Query: turn off the light.\ncomposer(\"move to the center of the button\")\ncomposer(\"close the gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the button.",
+        "code": "affordance_map = get_empty_affordance_map()\nbutton = parse_query_obj('button')\nx, y, z = button.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "failure",
+    "reward": 0.0,
+    "log_file": "logs/LampOff/LampOff_20260324_210853.txt"
+  },
+  {
+    "task": "LampOff",
+    "instruction": "close the gripper and press on the button until the light turns off",
+    "objects": [
+      "lamp",
+      "button"
+    ],
+    "planner_code": "objects = ['lamp', 'button']\n# Query: close the gripper and press on the button until the light turns off.\ncomposer(\"close the gripper\")\ncomposer(\"move to the center of the button and press until the light turns off\")\ncomposer(\"back to default pose\")",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the button.",
+        "code": "affordance_map = get_empty_affordance_map()\nbutton = parse_query_obj('button')\nx, y, z = button.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "stuck",
+    "reward": null,
+    "log_file": "logs/LampOff/LampOff_20260325_121434.txt"
+  },
+  {
+    "task": "LampOff",
+    "instruction": "turn the lamp off",
+    "objects": [
+      "lamp",
+      "button"
+    ],
+    "planner_code": "objects = ['lamp', 'button']\n# Query: turn the lamp off.\ncomposer(\"move to the center of the button\")\ncomposer(\"close the gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the button.",
+        "code": "affordance_map = get_empty_affordance_map()\nbutton = parse_query_obj('button')\nx, y, z = button.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "failure",
+    "reward": 0.0,
+    "log_file": "logs/LampOff/LampOff_20260324_211825.txt"
+  },
+  {
+    "task": "LampOff",
+    "instruction": "press the light switch",
+    "objects": [
+      "lamp",
+      "button"
+    ],
+    "planner_code": "objects = ['lamp', 'button']\n# Query: press the light switch.\ncomposer(\"move to the center of the button\")\ncomposer(\"close the gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the button.",
+        "code": "affordance_map = get_empty_affordance_map()\nbutton = parse_query_obj('button')\nx, y, z = button.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "failure",
+    "reward": 0.0,
+    "log_file": "logs/LampOff/LampOff_20260325_122220.txt"
+  },
+  {
+    "task": "LampOff",
+    "instruction": "turn off the light",
+    "objects": [
+      "lamp",
+      "button"
+    ],
+    "planner_code": "objects = ['lamp', 'button']\n# Query: turn off the light.\ncomposer(\"move to the center of the button\")\ncomposer(\"close the gripper\")\ncomposer(\"back to default pose\")",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the button.",
+        "code": "affordance_map = get_empty_affordance_map()\nbutton = parse_query_obj('button')\nx, y, z = button.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "success",
+    "reward": 1.0,
+    "log_file": "logs/LampOff/LampOff_20260324_211910.txt"
+  },
+  {
+    "task": "LampOff",
+    "instruction": "press the button to turn off the lamp",
+    "objects": [
+      "lamp",
+      "button"
+    ],
+    "planner_code": "objects = ['lamp', 'button']\n# Query: press the button to turn off the lamp.\ncomposer(\"move to the center of the button\")\ncomposer(\"close the gripper\")\ncomposer(\"back to default pose\")",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the button.",
+        "code": "affordance_map = get_empty_affordance_map()\nbutton = parse_query_obj('button')\nx, y, z = button.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "failure",
+    "reward": 0.0,
+    "log_file": "logs/LampOff/LampOff_20260325_142945.txt"
+  },
+  {
+    "task": "LampOff",
+    "instruction": "press the button to turn off the lamp",
+    "objects": [
+      "lamp",
+      "button"
+    ],
+    "planner_code": "objects = ['lamp', 'button']\n# Query: press the button to turn off the lamp.\ncomposer(\"move to the center of the button\")\ncomposer(\"close the gripper\")\ncomposer(\"back to default pose\")",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the button.",
+        "code": "affordance_map = get_empty_affordance_map()\nbutton = parse_query_obj('button')\nx, y, z = button.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "success",
+    "reward": 1.0,
+    "log_file": "logs/LampOff/LampOff_20260324_211100.txt"
+  },
+  {
+    "task": "LampOff",
+    "instruction": "turn the lamp off",
+    "objects": [
+      "lamp",
+      "button"
+    ],
+    "planner_code": "objects = ['lamp', 'button']\n# Query: turn the lamp off.\ncomposer(\"move to the center of the button\")\ncomposer(\"close the gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the button.",
+        "code": "affordance_map = get_empty_affordance_map()\nbutton = parse_query_obj('button')\nx, y, z = button.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "failure",
+    "reward": 0.0,
+    "log_file": "logs/LampOff/LampOff_20260324_222948.txt"
+  },
+  {
+    "task": "PushButton",
+    "instruction": "push the rose button",
+    "objects": [
+      "button"
+    ],
+    "planner_code": "objects = ['button']\n# Query: push the rose button.\ncomposer(\"push the button\")",
+    "affordance_maps": [
+      {
+        "query": "the button.",
+        "code": "affordance_map = get_empty_affordance_map()\nbutton = parse_query_obj('button')\naffordance_map = button.occupancy_map\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "failure",
+    "reward": 0.0,
+    "log_file": "logs/PushButton/PushButton_20260325_145310.txt"
+  },
+  {
+    "task": "PushButton",
+    "instruction": "push down the yellow button",
+    "objects": [
+      "button"
+    ],
+    "planner_code": "objects = ['button']\n# Query: push down the yellow button.\ncomposer(\"move to the center of the button\")\ncomposer(\"push down by 5cm\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the button.",
+        "code": "affordance_map = get_empty_affordance_map()\nbutton = parse_query_obj('button')\nx, y, z = button.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point 5cm below the current position.",
+        "code": "affordance_map = get_empty_affordance_map()\ncurrent_position = parse_query_obj('current position')\n# 5cm below so we subtract from z-axis\nx = current_position[0]\ny = current_position[1]\nz = current_position[2] - cm2index(5, 'z')\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "failure",
+    "reward": 0.0,
+    "log_file": "logs/PushButton/PushButton_20260325_145223.txt"
+  },
+  {
+    "task": "PushButton",
+    "instruction": "push the maroon button",
+    "objects": [
+      "button"
+    ],
+    "planner_code": "objects = ['button']\n# Query: push the maroon button.\ncomposer(\"move to the center of the button\")\ncomposer(\"push the button by 5cm\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the button.",
+        "code": "affordance_map = get_empty_affordance_map()\nbutton = parse_query_obj('button')\nx, y, z = button.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point 5cm into the button.",
+        "code": "affordance_map = get_empty_affordance_map()\nbutton = parse_query_obj('button')\n# negative normal because we are moving into the button.\nmoving_dir = -button.normal\naffordance_xyz = button.position + cm2index(5, moving_dir)\naffordance_map[affordance_xyz[0], affordance_xyz[1], affordance_xyz[2]] = 1\nret_val = affordance_map\n\n\n(using cache) *** OpenAI API call took 0.00s ***"
+      }
+    ],
+    "outcome": "failure",
+    "reward": 0.0,
+    "log_file": "logs/PushButton/PushButton_20260325_145107.txt"
+  },
+  {
+    "task": "PushButton",
+    "instruction": "press the azure button",
+    "objects": [
+      "button"
+    ],
+    "planner_code": "objects = ['button']\n# Query: press the azure button.\ncomposer(\"move to the center of the button\")\ncomposer(\"push the button by 5cm\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the button.",
+        "code": "affordance_map = get_empty_affordance_map()\nbutton = parse_query_obj('button')\nx, y, z = button.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point 5cm into the button.",
+        "code": "affordance_map = get_empty_affordance_map()\nbutton = parse_query_obj('button')\n# negative normal because we are moving into the button.\nmoving_dir = -button.normal\naffordance_xyz = button.position + cm2index(5, moving_dir)\naffordance_map[affordance_xyz[0], affordance_xyz[1], affordance_xyz[2]] = 1\nret_val = affordance_map\n\n\n(using cache) *** OpenAI API call took 0.00s ***"
+      }
+    ],
+    "outcome": "failure",
+    "reward": 0.0,
+    "log_file": "logs/PushButton/PushButton_20260325_144512.txt"
+  },
+  {
+    "task": "PushButton",
+    "instruction": "press the button with the rose base",
+    "objects": [
+      "button"
+    ],
+    "planner_code": "objects = ['button']\n# Query: press the button with the rose base.\ncomposer(\"move to the center of the button with the rose base\")\ncomposer(\"close the gripper\")\ncomposer(\"back to default pose\")",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the button with the rose base.",
+        "code": "affordance_map = get_empty_affordance_map()\nbutton_with_rose_base = parse_query_obj('button with the rose base')\nx, y, z = button_with_rose_base.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "failure",
+    "reward": 0.0,
+    "log_file": "logs/PushButton/PushButton_20260325_145427.txt"
+  },
+  {
+    "task": "PushButton",
+    "instruction": "push the navy button",
+    "objects": [
+      "button"
+    ],
+    "planner_code": "objects = ['button']\n# Query: push the navy button.\ncomposer(\"move to the center of the button\")\ncomposer(\"push the button\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the button.",
+        "code": "affordance_map = get_empty_affordance_map()\nbutton = parse_query_obj('button')\nx, y, z = button.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "the button.",
+        "code": "affordance_map = get_empty_affordance_map()\nbutton = parse_query_obj('button')\naffordance_map = button.occupancy_map\nret_val = affordance_map\n\n\n(using cache) *** OpenAI API call took 0.00s ***"
+      }
+    ],
+    "outcome": "failure",
+    "reward": 0.0,
+    "log_file": "logs/PushButton/PushButton_20260325_144415.txt"
+  },
+  {
+    "task": "PutRubbishInBin",
+    "instruction": "throw away the trash, leaving any other objects alone",
+    "objects": [
+      "bin",
+      "rubbish",
+      "tomato1",
+      "tomato2"
+    ],
+    "planner_code": "objects = ['bin', 'rubbish', 'tomato1', 'tomato2']\n# Query: throw away the trash, leaving any other objects alone.\ncomposer(\"grasp the rubbish\")\ncomposer(\"back to default pose\")\ncomposer(\"move to the top of the bin\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the rubbish.",
+        "code": "affordance_map = get_empty_affordance_map()\nrubbish = parse_query_obj('rubbish')\nx, y, z = rubbish.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point 10cm above the bin.",
+        "code": "affordance_map = get_empty_affordance_map()\nbin = parse_query_obj('bin')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = bin.aabb\ncenter_x, center_y, center_z = bin.position\n# 10cm above so we add to z-axis\nx = center_x\ny = center_y\nz = max_z + cm2index(10, 'z')\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "success",
+    "reward": 1.0,
+    "log_file": "logs/PutRubbishInBin/PutRubbishInBin_20260325_142548.txt"
+  },
+  {
+    "task": "PutRubbishInBin",
+    "instruction": "chuck way any rubbish on the table rubbish",
+    "objects": [
+      "bin",
+      "rubbish",
+      "tomato1",
+      "tomato2"
+    ],
+    "planner_code": "objects = ['bin', 'rubbish', 'tomato1', 'tomato2']\n# Query: chuck way any rubbish on the table rubbish.\ncomposer(\"grasp the rubbish\")\ncomposer(\"back to default pose\")\ncomposer(\"move to the top of the bin\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the rubbish.",
+        "code": "affordance_map = get_empty_affordance_map()\nrubbish = parse_query_obj('rubbish')\nx, y, z = rubbish.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point 10cm above the bin.",
+        "code": "affordance_map = get_empty_affordance_map()\nbin = parse_query_obj('bin')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = bin.aabb\ncenter_x, center_y, center_z = bin.position\n# 10cm above so we add to z-axis\nx = center_x\ny = center_y\nz = max_z + cm2index(10, 'z')\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "success",
+    "reward": 1.0,
+    "log_file": "logs/PutRubbishInBin/PutRubbishInBin_20260324_213435.txt"
+  },
+  {
+    "task": "PutRubbishInBin",
+    "instruction": "pick up the rubbish and leave it in the trash can",
+    "objects": [
+      "bin",
+      "rubbish",
+      "tomato1",
+      "tomato2"
+    ],
+    "planner_code": "objects = ['bin', 'rubbish', 'tomato1', 'tomato2']\n# Query: pick up the rubbish and leave it in the trash can.\ncomposer(\"grasp the rubbish\")\ncomposer(\"back to default pose\")\ncomposer(\"move to the top of the bin\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the rubbish.",
+        "code": "affordance_map = get_empty_affordance_map()\nrubbish = parse_query_obj('rubbish')\nx, y, z = rubbish.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point 10cm above the bin.",
+        "code": "affordance_map = get_empty_affordance_map()\nbin = parse_query_obj('bin')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = bin.aabb\ncenter_x, center_y, center_z = bin.position\n# 10cm above so we add to z-axis\nx = center_x\ny = center_y\nz = max_z + cm2index(10, 'z')\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "stuck",
+    "reward": null,
+    "log_file": "logs/PutRubbishInBin/PutRubbishInBin_20260324_204031.txt"
+  },
+  {
+    "task": "PutRubbishInBin",
+    "instruction": "throw away the trash, leaving any other objects alone",
+    "objects": [
+      "bin",
+      "rubbish",
+      "tomato1",
+      "tomato2"
+    ],
+    "planner_code": "objects = ['bin', 'rubbish', 'tomato1', 'tomato2']\n# Query: throw away the trash, leaving any other objects alone.\ncomposer(\"grasp the rubbish\")\ncomposer(\"back to default pose\")\ncomposer(\"move to the top of the bin\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the rubbish.",
+        "code": "affordance_map = get_empty_affordance_map()\nrubbish = parse_query_obj('rubbish')\nx, y, z = rubbish.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point 10cm above the bin.",
+        "code": "affordance_map = get_empty_affordance_map()\nbin = parse_query_obj('bin')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = bin.aabb\ncenter_x, center_y, center_z = bin.position\n# 10cm above so we add to z-axis\nx = center_x\ny = center_y\nz = max_z + cm2index(10, 'z')\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "stuck",
+    "reward": null,
+    "log_file": "logs/PutRubbishInBin/PutRubbishInBin_20260324_210043.txt"
+  },
+  {
+    "task": "PutRubbishInBin",
+    "instruction": "drop the rubbish into the bin",
+    "objects": [
+      "bin",
+      "rubbish",
+      "tomato1",
+      "tomato2"
+    ],
+    "planner_code": "objects = ['bin', 'rubbish', 'tomato1', 'tomato2']\n# Query: drop the rubbish into the bin.\ncomposer(\"grasp the rubbish\")\ncomposer(\"back to default pose\")\ncomposer(\"move to the top of the bin\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the rubbish.",
+        "code": "affordance_map = get_empty_affordance_map()\nrubbish = parse_query_obj('rubbish')\nx, y, z = rubbish.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point 10cm above the bin.",
+        "code": "affordance_map = get_empty_affordance_map()\nbin = parse_query_obj('bin')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = bin.aabb\ncenter_x, center_y, center_z = bin.position\n# 10cm above so we add to z-axis\nx = center_x\ny = center_y\nz = max_z + cm2index(10, 'z')\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "success",
+    "reward": 1.0,
+    "log_file": "logs/PutRubbishInBin/PutRubbishInBin_20260324_210402.txt"
+  },
+  {
+    "task": "PutRubbishInBin",
+    "instruction": "pick up the rubbish and leave it in the trash can",
+    "objects": [
+      "bin",
+      "rubbish",
+      "tomato1",
+      "tomato2"
+    ],
+    "planner_code": "objects = ['bin', 'rubbish', 'tomato1', 'tomato2']\n# Query: pick up the rubbish and leave it in the trash can.\ncomposer(\"grasp the rubbish\")\ncomposer(\"back to default pose\")\ncomposer(\"move to the top of the bin\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the rubbish.",
+        "code": "affordance_map = get_empty_affordance_map()\nrubbish = parse_query_obj('rubbish')\nx, y, z = rubbish.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point 10cm above the bin.",
+        "code": "affordance_map = get_empty_affordance_map()\nbin = parse_query_obj('bin')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = bin.aabb\ncenter_x, center_y, center_z = bin.position\n# 10cm above so we add to z-axis\nx = center_x\ny = center_y\nz = max_z + cm2index(10, 'z')\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "success",
+    "reward": 1.0,
+    "log_file": "logs/PutRubbishInBin/PutRubbishInBin_20260324_203854.txt"
+  },
+  {
+    "task": "PutRubbishInBin",
+    "instruction": "chuck way any rubbish on the table rubbish",
+    "objects": [
+      "bin",
+      "rubbish",
+      "tomato1",
+      "tomato2"
+    ],
+    "planner_code": "objects = ['bin', 'rubbish', 'tomato1', 'tomato2']\n# Query: chuck way any rubbish on the table rubbish.\ncomposer(\"grasp the rubbish\")\ncomposer(\"back to default pose\")\ncomposer(\"move to the top of the bin\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the rubbish.",
+        "code": "affordance_map = get_empty_affordance_map()\nrubbish = parse_query_obj('rubbish')\nx, y, z = rubbish.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point 10cm above the bin.",
+        "code": "affordance_map = get_empty_affordance_map()\nbin = parse_query_obj('bin')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = bin.aabb\ncenter_x, center_y, center_z = bin.position\n# 10cm above so we add to z-axis\nx = center_x\ny = center_y\nz = max_z + cm2index(10, 'z')\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "success",
+    "reward": 1.0,
+    "log_file": "logs/PutRubbishInBin/PutRubbishInBin_20260325_122328.txt"
+  },
+  {
+    "task": "PutRubbishInBin",
+    "instruction": "chuck way any rubbish on the table rubbish",
+    "objects": [
+      "bin",
+      "rubbish",
+      "tomato1",
+      "tomato2"
+    ],
+    "planner_code": "objects = ['bin', 'rubbish', 'tomato1', 'tomato2']\n# Query: chuck way any rubbish on the table rubbish.\ncomposer(\"grasp the rubbish\")\ncomposer(\"back to default pose\")\ncomposer(\"move to the top of the bin\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the rubbish.",
+        "code": "affordance_map = get_empty_affordance_map()\nrubbish = parse_query_obj('rubbish')\nx, y, z = rubbish.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point 10cm above the bin.",
+        "code": "affordance_map = get_empty_affordance_map()\nbin = parse_query_obj('bin')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = bin.aabb\ncenter_x, center_y, center_z = bin.position\n# 10cm above so we add to z-axis\nx = center_x\ny = center_y\nz = max_z + cm2index(10, 'z')\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "stuck",
+    "reward": null,
+    "log_file": "logs/PutRubbishInBin/PutRubbishInBin_20260325_144648.txt"
+  },
+  {
+    "task": "PutRubbishInBin",
+    "instruction": "chuck way any rubbish on the table rubbish",
+    "objects": [
+      "bin",
+      "rubbish",
+      "tomato1",
+      "tomato2"
+    ],
+    "planner_code": "objects = ['bin', 'rubbish', 'tomato1', 'tomato2']\n# Query: chuck way any rubbish on the table rubbish.\ncomposer(\"grasp the rubbish\")\ncomposer(\"back to default pose\")\ncomposer(\"move to the top of the bin\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the rubbish.",
+        "code": "affordance_map = get_empty_affordance_map()\nrubbish = parse_query_obj('rubbish')\nx, y, z = rubbish.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point 10cm above the bin.",
+        "code": "affordance_map = get_empty_affordance_map()\nbin = parse_query_obj('bin')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = bin.aabb\ncenter_x, center_y, center_z = bin.position\n# 10cm above so we add to z-axis\nx = center_x\ny = center_y\nz = max_z + cm2index(10, 'z')\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "success",
+    "reward": 1.0,
+    "log_file": "logs/PutRubbishInBin/PutRubbishInBin_20260324_204301.txt"
+  },
+  {
+    "task": "PutRubbishInBin",
+    "instruction": "throw away the trash, leaving any other objects alone",
+    "objects": [
+      "bin",
+      "rubbish",
+      "tomato1",
+      "tomato2"
+    ],
+    "planner_code": "objects = ['bin', 'rubbish', 'tomato1', 'tomato2']\n# Query: throw away the trash, leaving any other objects alone.\ncomposer(\"grasp the rubbish\")\ncomposer(\"back to default pose\")\ncomposer(\"move to the top of the bin\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the rubbish.",
+        "code": "affordance_map = get_empty_affordance_map()\nrubbish = parse_query_obj('rubbish')\nx, y, z = rubbish.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point 10cm above the bin.",
+        "code": "affordance_map = get_empty_affordance_map()\nbin = parse_query_obj('bin')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = bin.aabb\ncenter_x, center_y, center_z = bin.position\n# 10cm above so we add to z-axis\nx = center_x\ny = center_y\nz = max_z + cm2index(10, 'z')\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "success",
+    "reward": 1.0,
+    "log_file": "logs/PutRubbishInBin/PutRubbishInBin_20260324_210700.txt"
+  },
+  {
+    "task": "PutRubbishInBin",
+    "instruction": "drop the rubbish into the bin",
+    "objects": [
+      "bin",
+      "rubbish",
+      "tomato1",
+      "tomato2"
+    ],
+    "planner_code": "objects = ['bin', 'rubbish', 'tomato1', 'tomato2']\n# Query: drop the rubbish into the bin.\ncomposer(\"grasp the rubbish\")\ncomposer(\"back to default pose\")\ncomposer(\"move to 10cm on top of the bin\")\ncomposer(\"open gripper\")\ncomposer(\"back to default pose\")\n# done",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the rubbish.",
+        "code": "affordance_map = get_empty_affordance_map()\nrubbish = parse_query_obj('rubbish')\nx, y, z = rubbish.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      },
+      {
+        "query": "a point 10cm above the bin.",
+        "code": "affordance_map = get_empty_affordance_map()\nbin = parse_query_obj('bin')\n(min_x, min_y, min_z), (max_x, max_y, max_z) = bin.aabb\ncenter_x, center_y, center_z = bin.position\n# 10cm above so we add to z-axis\nx = center_x\ny = center_y\nz = max_z + cm2index(10, 'z')\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "success",
+    "reward": 1.0,
+    "log_file": "logs/PutRubbishInBin/PutRubbishInBin_20260325_144831.txt"
+  },
+  {
+    "task": "PushButton",
+    "instruction": "push down the magenta button",
+    "objects": [
+      "button"
+    ],
+    "planner_code": "objects = ['button']\n# Query: push down the magenta button.\ncomposer(\"move to the center of the button\")\ncomposer(\"close the gripper\")\ncomposer(\"back to default pose\")",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the button.",
+        "code": "affordance_map = get_empty_affordance_map()\nbutton = parse_query_obj('button')\nx, y, z = button.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "stuck",
+    "reward": null,
+    "log_file": "logs/PushButton/PushButton_20260325_151314.txt"
+  },
+  {
+    "task": "PushButton",
+    "instruction": "press the teal button",
+    "objects": [
+      "button"
+    ],
+    "planner_code": "objects = ['button']\n# Query: press the teal button.\ncomposer(\"move to the center of the button\")\ncomposer(\"close the gripper\")\ncomposer(\"back to default pose\")",
+    "affordance_maps": [
+      {
+        "query": "a point at the center of the button.",
+        "code": "affordance_map = get_empty_affordance_map()\nbutton = parse_query_obj('button')\nx, y, z = button.position\naffordance_map[x, y, z] = 1\nret_val = affordance_map"
+      }
+    ],
+    "outcome": "stuck",
+    "reward": null,
+    "log_file": "logs/PushButton/PushButton_20260325_211207.txt"
+  }
+]
