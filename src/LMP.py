@@ -1,4 +1,3 @@
-
 import openai
 from time import sleep
 from openai.error import RateLimitError, APIConnectionError
@@ -7,7 +6,9 @@ from pygments.lexers import PythonLexer
 from pygments.formatters import TerminalFormatter
 from utils import load_prompt, DynamicObservation, IterableDynamicObservation
 import time
+import ast
 from LLM_cache import DiskCache
+
 
 class LMP:
     """Language Model Program (LMP), adopted from Code as Policies."""
@@ -23,22 +24,72 @@ class LMP:
         self._context = None
         self._cache = DiskCache(load_cache=self._cfg['load_cache'])
 
-        USE_MEMORY = False  # set to True to enable memory module
+        self._memory_cfg = self._cfg.get('memory', {})
+        self._use_memory = self._memory_cfg.get('enabled', False)
+        self._memory_top_k = self._memory_cfg.get('top_k', 1)
+        self._memory_min_score = self._memory_cfg.get('min_score', 0.1)
+        self._memory_max_score = self._memory_cfg.get('max_score', 0.99)
+        self._memory_file = self._memory_cfg.get('memory_file', None)
+        self._memory_task = self._memory_cfg.get('task_name', None)
 
-        if USE_MEMORY and self._name == 'planner':
+        if self._use_memory and self._name == 'planner':
             from memory.memory_store import retrieve, retrieve_failures
-            self._retrieve = retrieve
-            self._retrieve_failures = retrieve_failures
-        elif USE_MEMORY and self._name == 'get_affordance_map':
+
+            self._retrieve = lambda query, objects: retrieve(
+                instruction=query,
+                objects=objects,
+                task=self._memory_task,
+                top_k=self._memory_top_k,
+                min_score=self._memory_min_score,
+                max_score=self._memory_max_score,
+                memory_file=self._memory_file,
+            )
+
+            self._retrieve_failures = lambda query, objects: retrieve_failures(
+                instruction=query,
+                objects=objects,
+                task=self._memory_task,
+                top_k=self._memory_top_k,
+                min_score=self._memory_min_score,
+                max_score=self._memory_max_score,
+                memory_file=self._memory_file,
+            )
+
+        elif self._use_memory and self._name == 'get_affordance_map':
             from memory.memory_store import retrieve_affordance_hint
-            self._retrieve = retrieve_affordance_hint
+
+            self._retrieve = lambda query, objects: retrieve_affordance_hint(
+                query=query,
+                objects=objects,
+                task=self._memory_task,
+                top_k=self._memory_top_k,
+                min_score=self._memory_min_score,
+                max_score=self._memory_max_score,
+                memory_file=self._memory_file,
+            )
             self._retrieve_failures = None
+
         else:
             self._retrieve = None
             self._retrieve_failures = None
 
     def clear_exec_hist(self):
         self.exec_hist = ''
+
+    def _get_context_objects(self):
+        """Safely parse objects = [...] from the LMP context."""
+        if not self._context:
+            return []
+        if 'objects =' not in self._context:
+            return []
+        try:
+            rhs = self._context.split('=', 1)[1].strip()
+            parsed = ast.literal_eval(rhs)
+            if isinstance(parsed, list):
+                return parsed
+            return []
+        except Exception:
+            return []
 
     def build_prompt(self, query):
         if len(self._variable_vars) > 0:
@@ -49,7 +100,7 @@ class LMP:
 
         if self._cfg['maintain_session'] and self.exec_hist != '':
             prompt += f'\n{self.exec_hist}'
-        
+
         prompt += '\n'  # separate prompted examples with the query part
 
         if self._cfg['include_context']:
@@ -61,18 +112,15 @@ class LMP:
 
         if self._retrieve is not None:
             if self._name == 'planner':
-                objects = []
-                if self._context:
-                    try:
-                        objects = eval(self._context.split('=', 1)[1].strip())
-                    except Exception:
-                        pass
-                retrieved = self._retrieve(query, objects, top_k=1)
+                objects = self._get_context_objects()
+                retrieved = self._retrieve(query, objects)
                 print(f'[memory] planner query="{query}" retrieved={len(retrieved)}')
+
                 if retrieved:
                     ep = retrieved[0]
+                    planner_code = ep.get('planner_code', '') or ''
                     code_lines = [
-                        l for l in ep['planner_code'].splitlines()
+                        l for l in planner_code.splitlines()
                         if not l.startswith('objects =') and not l.startswith('# Query:')
                     ]
                     clean_code = '\n'.join(code_lines).strip()
@@ -82,8 +130,9 @@ class LMP:
                             f"\n# Memory hint from similar task ('{ep['instruction']}'):"
                             f"\n{commented}"
                         )
+
                 if self._retrieve_failures is not None:
-                    failed = self._retrieve_failures(query, objects, top_k=1)
+                    failed = self._retrieve_failures(query, objects)
                     print(f'[memory] planner failures query="{query}" retrieved={len(failed)}')
                     if failed:
                         fep = failed[0]
@@ -91,9 +140,12 @@ class LMP:
                             f"\n# WARNING: a similar task ('{fep['instruction']}') previously failed."
                             f" Ensure correct object targeting and reachable positions."
                         )
+
             elif self._name == 'get_affordance_map':
-                retrieved = self._retrieve(query, top_k=1)
+                objects = self._get_context_objects()
+                retrieved = self._retrieve(query, objects)
                 print(f'[memory] affordance query="{query}" retrieved={len(retrieved)}')
+
                 if retrieved:
                     hint = retrieved[0]
                     code_lines = [
@@ -109,7 +161,7 @@ class LMP:
                         )
 
         return prompt, user_query
-    
+
     def _cached_api_call(self, **kwargs):
         # check whether completion endpoint or chat endpoint is used
         if kwargs['model'] != 'gpt-3.5-turbo-instruct' and \
@@ -128,7 +180,7 @@ class LMP:
                 user1 = '\n'.join(user1.split('\n')[:-4]) + '\n' + '\n'.join(user1.split('\n')[-3:])
                 # add obj_context to user2
                 user2 = obj_context.strip() + '\n' + user2
-            messages=[
+            messages = [
                 {"role": "system", "content": "You are a helpful assistant that pays attention to the user's instructions and writes good python code for operating a robot arm in a tabletop environment."},
                 {"role": "user", "content": user1},
                 {"role": "assistant", "content": assistant1},
@@ -184,9 +236,9 @@ class LMP:
         to_log_pretty = highlight(to_log, PythonLexer(), TerminalFormatter())
 
         if self._cfg['include_context']:
-            print('#'*40 + f'\n## "{self._name}" generated code\n' + f'## context: "{self._context}"\n' + '#'*40 + f'\n{to_log_pretty}\n')
+            print('#' * 40 + f'\n## "{self._name}" generated code\n' + f'## context: "{self._context}"\n' + '#' * 40 + f'\n{to_log_pretty}\n')
         else:
-            print('#'*40 + f'\n## "{self._name}" generated code\n' + '#'*40 + f'\n{to_log_pretty}\n')
+            print('#' * 40 + f'\n## "{self._name}" generated code\n' + '#' * 40 + f'\n{to_log_pretty}\n')
 
         gvars = merge_dicts([self._fixed_vars, self._variable_vars])
         lvars = kwargs
@@ -204,7 +256,7 @@ class LMP:
                     exec_safe(to_exec.replace(s, f'# {s}'), gvars, lvars)
             except Exception as e:
                 print(f'Error: {e}')
-                import pdb ; pdb.set_trace()
+                import pdb; pdb.set_trace()
         else:
             exec_safe(to_exec, gvars, lvars)
 
@@ -225,17 +277,17 @@ class LMP:
 
 def merge_dicts(dicts):
     return {
-        k : v 
+        k: v
         for d in dicts
         for k, v in d.items()
     }
-    
+
 
 def exec_safe(code_str, gvars=None, lvars=None):
     banned_phrases = ['import', '__']
     for phrase in banned_phrases:
         assert phrase not in code_str
-  
+
     if gvars is None:
         gvars = {}
     if lvars is None:

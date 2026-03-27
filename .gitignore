@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions / build artifacts
+*.so
+build/
+dist/
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.vscode/
+.idea/
+
+# Environment files / secrets
+.env
+.env.*
+*.pem
+*.key
+
+# Python test / coverage
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Local caches
+cache/
+**/cache/
+*.pkl
+
+# Project-generated memory / logs / outputs
+src/memory/episodes.json
+logs/
+src/logs/
+visualizations/
+src/visualizations/
+
+# Misc temp files
+*.tmp
+*.swp
+*.swo
