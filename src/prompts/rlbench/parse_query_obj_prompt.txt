@@ -6,6 +6,16 @@ objects = ['green block', 'cardboard box']
 gripper = detect('gripper')
 ret_val = gripper
 
+objects = ['button']
+# Query: purple button.
+button = detect('button')
+ret_val = button
+
+objects = ['saucepan', 'saucepan_lid']
+# Query: saucepan lid handle.
+saucepan_lid = detect('saucepan_lid')
+ret_val = saucepan_lid
+
 objects = ['handle1', 'handle2', 'egg1', 'egg2', 'plate']
 # Query: topmost handle.
 handle1 = detect('handle1')

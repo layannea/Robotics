@@ -9,7 +9,11 @@ class DiskCache:
     Useful for querying LLM API.
     """
     def __init__(self, cache_dir='cache', load_cache=True):
-        self.cache_dir = cache_dir
+        if os.path.isabs(cache_dir):
+            self.cache_dir = cache_dir
+        else:
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+            self.cache_dir = os.path.join(base_dir, cache_dir)
         self.data = {}
         
         if not os.path.exists(self.cache_dir):
@@ -31,6 +35,7 @@ class DiskCache:
 
     def _save_to_disk(self, key, value):
         filename = self._generate_filename(key)
+        os.makedirs(self.cache_dir, exist_ok=True)
         with open(os.path.join(self.cache_dir, filename), 'wb') as file:
             pickle.dump((key, value), file)
 
@@ -61,5 +66,3 @@ if __name__ == '__main__':
     # When you restart your program, the cache will load the previous key-value pairs
     cache2 = DiskCache()
     print(cache2)  # {"{'id': 1, 'name': 'John'}": 'value1'}
-
-

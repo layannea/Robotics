@@ -68,6 +68,11 @@ movable = parse_query_obj('drawer handle')
 affordance_map = get_affordance_map('a point 5cm into the drawer handle')
 execute(movable, affordance_map=affordance_map)
 
+# Query: push the button.
+movable = parse_query_obj('gripper')
+affordance_map = get_affordance_map('a point 5cm into the button')
+execute(movable, affordance_map=affordance_map)
+
 # Query: move to 5cm on top of the soda can, at 0.5x speed when within 20cm of the wooden mug, and keep at least 15cm away from the wooden mug.
 movable = parse_query_obj('gripper')
 affordance_map = get_affordance_map('a point 5cm above the soda can')

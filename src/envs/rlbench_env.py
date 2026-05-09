@@ -1,4 +1,5 @@
 import os
+import warnings
 import numpy as np
 import open3d as o3d
 import json
@@ -6,9 +7,11 @@ from rlbench.action_modes.action_mode import MoveArmThenGripper
 from rlbench.action_modes.arm_action_modes import ArmActionMode, EndEffectorPoseViaPlanning
 from rlbench.action_modes.gripper_action_modes import Discrete, GripperActionMode
 from rlbench.environment import Environment
+from rlbench.observation_config import ObservationConfig
 import rlbench.tasks as tasks
 from pyrep.const import ObjectType
 from utils import normalize_vector, bcolors
+from perception.backend import InProcessPerceptionBackend, SubprocessPerceptionBackend
 
 class CustomMoveArmThenGripper(MoveArmThenGripper):
     """
@@ -27,19 +30,35 @@ class CustomMoveArmThenGripper(MoveArmThenGripper):
         arm_act_size = np.prod(self.arm_action_mode.action_shape(scene))
         arm_action = np.array(action[:arm_act_size])
         ee_action = np.array(action[arm_act_size:])
+        if not np.isfinite(arm_action).all():
+            print(f'{bcolors.FAIL}[rlbench_env.py] Ignoring non-finite arm action: {arm_action}{bcolors.ENDC}')
+            self.gripper_action_mode.action(scene, ee_action)
+            self._prev_arm_action = arm_action.copy()
+            return
         # if the arm action is the same as the previous action, skip it
         if self._prev_arm_action is not None and np.allclose(arm_action, self._prev_arm_action):
             self.gripper_action_mode.action(scene, ee_action)
         else:
             try:
-                self.arm_action_mode.action(scene, arm_action)
-            except Exception as e:
+                with warnings.catch_warnings():
+                    warnings.filterwarnings(
+                        "error",
+                        message=".*divide by zero encountered.*",
+                        category=RuntimeWarning,
+                    )
+                    warnings.filterwarnings(
+                        "error",
+                        message=".*invalid value encountered.*",
+                        category=RuntimeWarning,
+                    )
+                    self.arm_action_mode.action(scene, arm_action)
+            except (Exception, RuntimeWarning) as e:
                 print(f'{bcolors.FAIL}[rlbench_env.py] Ignoring failed arm action; Exception: "{str(e)}"{bcolors.ENDC}')
             self.gripper_action_mode.action(scene, ee_action)
         self._prev_arm_action = arm_action.copy()
 
 class VoxPoserRLBench():
-    def __init__(self, visualizer=None):
+    def __init__(self, visualizer=None, camera_resolution=None):
         """
         Initializes the VoxPoserRLBench environment.
 
@@ -48,9 +67,11 @@ class VoxPoserRLBench():
         """
         action_mode = CustomMoveArmThenGripper(arm_action_mode=EndEffectorPoseViaPlanning(),
                                         gripper_action_mode=Discrete())
-        self.rlbench_env = Environment(action_mode)
+        obs_config = self._make_obs_config(camera_resolution)
+        self.rlbench_env = Environment(action_mode, obs_config=obs_config, headless=False)
         self.rlbench_env.launch()
         self.task = None
+        self.camera_resolution = tuple(obs_config.front_camera.image_size)
 
         self.workspace_bounds_min = np.array([self.rlbench_env._scene._workspace_minx, self.rlbench_env._scene._workspace_miny, self.rlbench_env._scene._workspace_minz])
         self.workspace_bounds_max = np.array([self.rlbench_env._scene._workspace_maxx, self.rlbench_env._scene._workspace_maxy, self.rlbench_env._scene._workspace_maxz])
@@ -76,8 +97,90 @@ class VoxPoserRLBench():
         path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'task_object_names.json')
         with open(path, 'r') as f:
             self.task_object_names = json.load(f)
+        self.perception_backend = None
+        self.perception_fallback_to_oracle = False
 
         self._reset_task_variables()
+        self._closed = False
+
+    def _make_obs_config(self, camera_resolution):
+        obs_config = ObservationConfig()
+        if camera_resolution is None:
+            return obs_config
+        if isinstance(camera_resolution, int):
+            image_size = (camera_resolution, camera_resolution)
+        else:
+            image_size = tuple(camera_resolution)
+        if len(image_size) != 2:
+            raise ValueError(f"camera_resolution must be an int or a length-2 tuple, got {camera_resolution}")
+        for camera in (
+            obs_config.front_camera,
+            obs_config.left_shoulder_camera,
+            obs_config.right_shoulder_camera,
+            obs_config.overhead_camera,
+            obs_config.wrist_camera,
+        ):
+            camera.image_size = image_size
+        return obs_config
+
+    def enable_perception_backend(
+        self,
+        backend=None,
+        fallback_to_oracle=False,
+        backend_type="subprocess",
+        **backend_kwargs,
+    ):
+        """
+        Enables GroundingDINO+SAM2 perception for object point clouds.
+
+        By default, get_3d_obs_by_name uses RLBench oracle masks. Calling this
+        method switches it to a perception backend. Use
+        backend_type="inprocess" from the combined Python 3.11 environment to
+        keep GroundingDINO/SAM2 loaded inside the notebook kernel.
+        """
+        if backend is None:
+            src_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+            if backend_type in ("inprocess", "in_process"):
+                backend = InProcessPerceptionBackend(src_dir=src_dir, **backend_kwargs)
+            elif backend_type == "subprocess":
+                backend = SubprocessPerceptionBackend(src_dir=src_dir, **backend_kwargs)
+            else:
+                raise ValueError(f"Unsupported perception backend_type: {backend_type}")
+        self.perception_backend = backend
+        self.perception_fallback_to_oracle = fallback_to_oracle
+
+    def disable_perception_backend(self):
+        self.perception_backend = None
+
+    def shutdown(self):
+        """
+        Shuts down the underlying RLBench/PyRep simulator.
+
+        Safe to call multiple times.
+        """
+        if self._closed:
+            return
+        try:
+            if self.rlbench_env is not None:
+                self.rlbench_env.shutdown()
+        finally:
+            self.task = None
+            self._reset_task_variables()
+            self._closed = True
+
+    close = shutdown
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.shutdown()
+
+    def __del__(self):
+        try:
+            self.shutdown()
+        except Exception:
+            pass
 
     def get_object_names(self):
         """
@@ -136,6 +239,23 @@ class VoxPoserRLBench():
             tuple: A tuple containing object points and object normals.
         """
         assert query_name in self.name2ids, f"Unknown object name: {query_name}"
+        if self.perception_backend is not None:
+            try:
+                return self._get_3d_obs_by_perception(query_name)
+            except Exception as e:
+                if not self.perception_fallback_to_oracle:
+                    raise
+                print(f'{bcolors.WARNING}[rlbench_env.py] Perception failed for "{query_name}", falling back to oracle masks. Exception: "{str(e)}"{bcolors.ENDC}')
+        return self._get_3d_obs_by_oracle(query_name)
+
+    def _get_3d_obs_by_perception(self, query_name):
+        obj_points = self.perception_backend.get_object_points(self, query_name)
+        if len(obj_points) == 0:
+            raise ValueError(f"Perception backend found no points for {query_name}")
+        obj_points, obj_normals = self._downsample_points_and_estimate_normals(obj_points)
+        return obj_points, obj_normals
+
+    def _get_3d_obs_by_oracle(self, query_name):
         obj_ids = self.name2ids[query_name]
         # gather points and masks from all cameras
         points, masks, normals = [], [], []
@@ -166,6 +286,23 @@ class VoxPoserRLBench():
         pcd_downsampled = pcd.voxel_down_sample(voxel_size=0.001)
         obj_points = np.asarray(pcd_downsampled.points)
         obj_normals = np.asarray(pcd_downsampled.normals)
+        return obj_points, obj_normals
+
+    def _downsample_points_and_estimate_normals(self, obj_points):
+        pcd = o3d.geometry.PointCloud()
+        pcd.points = o3d.utility.Vector3dVector(obj_points)
+        pcd_downsampled = pcd.voxel_down_sample(voxel_size=0.001)
+        if len(pcd_downsampled.points) >= 30:
+            pcd_downsampled, _ = pcd_downsampled.remove_statistical_outlier(
+                nb_neighbors=10,
+                std_ratio=2.0,
+            )
+        if len(pcd_downsampled.points) >= 3:
+            pcd_downsampled.estimate_normals()
+            obj_normals = np.asarray(pcd_downsampled.normals)
+        else:
+            obj_normals = np.tile(np.array([[0.0, 0.0, 1.0]]), (len(pcd_downsampled.points), 1))
+        obj_points = np.asarray(pcd_downsampled.points)
         return obj_points, obj_normals
 
     def get_scene_3d_obs(self, ignore_robot=False, ignore_grasped_obj=False):
@@ -230,6 +367,8 @@ class VoxPoserRLBench():
         obs = self._process_obs(obs)
         self.init_obs = obs
         self.latest_obs = obs
+        if self.perception_backend is not None:
+            self.perception_backend.clear_cache()
         self._update_visualizer()
         return descriptions, obs
 
@@ -248,6 +387,8 @@ class VoxPoserRLBench():
         obs, reward, terminate = self.task.step(action)
         obs = self._process_obs(obs)
         self.latest_obs = obs
+        if self.perception_backend is not None:
+            self.perception_backend.clear_cache()
         self.latest_reward = reward
         self.latest_terminate = terminate
         self.latest_action = action

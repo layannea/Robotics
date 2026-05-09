@@ -136,8 +136,7 @@ class LMP_interface():
         step_info['avoidance_map'] = _avoidance_map
 
         # visualize
-        if self._cfg['visualize']:
-          assert self._env.visualizer is not None
+        if self._cfg['visualize'] and self._env.visualizer is not None:
           step_info['start_pos_world'] = self._voxel_to_world(start_pos)
           step_info['targets_world'] = self._voxel_to_world(planner_info['targets_voxel'])
           self._env.visualizer.visualize(step_info)
@@ -152,7 +151,7 @@ class LMP_interface():
             break
           # skip waypoint if moving to this point is going in opposite direction of the final target point
           # (for example, if you have over-pushed an object, no need to move back)
-          if i != 0 and i != len(traj_world) - 1:
+          if object_centric and i != 0 and i != len(traj_world) - 1:
             movable2target = traj_world[-1][0] - movable_obs['_position_world']
             movable2waypoint = waypoint[0] - movable_obs['_position_world']
             if np.dot(movable2target, movable2waypoint).round(3) <= 0:
@@ -247,6 +246,10 @@ class LMP_interface():
   def pointat2quat(self, vector):
     assert isinstance(vector, np.ndarray) and vector.shape == (3,), f'vector: {vector}'
     return pointat2quat(vector)
+
+  def vec2quat(self, vector):
+    """Compatibility alias used by rotation-map prompts."""
+    return self.pointat2quat(vector)
 
   def set_voxel_by_radius(self, voxel_map, voxel_xyz, radius_cm=0, value=1):
     """given a 3D np array, set the value of the voxel at voxel_xyz to value. If radius is specified, set the value of all voxels within the radius to value."""

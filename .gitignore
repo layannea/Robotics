@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+.ipynb_checkpoints/
+.env
+.env.*
+*.log
+
+cache/
+src/cache/
+src/perception_dumps/
+src/planning_dumps/
+src/src/
+src/**/perception_dumps/
+src/**/planning_dumps/
+src/**/__pycache__/
